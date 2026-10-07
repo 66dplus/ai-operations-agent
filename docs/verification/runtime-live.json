@@ -1,0 +1,112 @@
+{
+  "campaign_id": "693406f1-671a-4cd2-9d7f-066b2b93fb00",
+  "native_live50": "PASS",
+  "unique_domains": 50,
+  "source_snapshots": 64,
+  "every_quote_checked": true,
+  "every_source_hash_checked": true,
+  "budget_before_linux": {
+    "name": "acceptance",
+    "model_calls": 56,
+    "firecrawl_credits": 167
+  },
+  "use_balance_off": "Confirmed by owner before live requests",
+  "provider": "opencode-go",
+  "model": "deepseek-v4.1-flash",
+  "cli": "1.18.35",
+  "approved_revision_before_transfer": 2,
+  "native_live50_counts": {
+    "discovered": 50,
+    "processed": 50,
+    "qualified": 48,
+    "approved": 1,
+    "failed": 0
+  },
+  "linux_runtime_gate": {
+    "runtime": {
+      "healthy": true,
+      "version": "1.18.35"
+    },
+    "provider": "opencode-go",
+    "model": "deepseek-v4.1-flash",
+    "enabled_providers": [
+      "opencode-go"
+    ],
+    "default_permission": "deny",
+    "mcp_names": [
+      "research"
+    ],
+    "schema_field": "info.structured",
+    "structured_result": {
+      "ready": true
+    },
+    "budget": {
+      "name": "acceptance",
+      "model_calls": 57,
+      "firecrawl_credits": 167
+    }
+  },
+  "final_linux_readback": {
+    "campaign_id": "693406f1-671a-4cd2-9d7f-066b2b93fb00",
+    "counts": {
+      "discovered": 50,
+      "processed": 50,
+      "qualified": 48,
+      "approved": 2,
+      "failed": 0
+    },
+    "unique_domains": 50,
+    "source_snapshots": 64,
+    "checked_quotes": 184,
+    "every_source_hash_checked": true,
+    "budget": {
+      "name": "acceptance",
+      "model_calls": 87,
+      "firecrawl_credits": 250
+    },
+    "approved_revisions": [
+      {
+        "company": "FANUC America",
+        "approved_revision": 2
+      },
+      {
+        "company": "Mobile Industrial Robots (MiR)",
+        "approved_revision": 2
+      }
+    ],
+    "exports_byte_identical_after_full_restart": true,
+    "budget_unchanged_after_full_restart": true
+  },
+  "final_provider_receipts": {
+    "model": {
+      "received": 86,
+      "uncertain_reserved": 1
+    },
+    "firecrawl": {
+      "received_requests": 117,
+      "reserved_credits": 250
+    }
+  },
+  "mode_race": {
+    "observed": "Late health response selected Live over Demo during browser acceptance.",
+    "fixed": "Health now only enables Live; Demo remains the initial selection. Offline POST guards prevent paid test dispatch.",
+    "retained_additional_budget_after_linux_gate": {
+      "model_calls": 30,
+      "firecrawl_credits": 83
+    },
+    "tasks_fenced": true,
+    "budget_reset": false
+  },
+  "local_verification": {
+    "backend_tests": 41,
+    "browser_tests": 10,
+    "typecheck": "PASS",
+    "linux_build": "PASS",
+    "linux_full_container_restart": "PASS",
+    "independent_read_only_review": "PASS",
+    "remote_ci": "NOT RUN",
+    "server_deployment": "NOT RUN",
+    "new_linux_live50_research": "NOT RUN (retained native dataset reviewed in Linux; no second paid50 run)"
+  },
+  "verified_utc": "2026-10-07T20:41:34Z"
+}

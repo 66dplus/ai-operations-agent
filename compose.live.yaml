@@ -1,0 +1,38 @@
+# Explicit opt-in: the default Compose file stays fully offline and key-free.
+services:
+  api:
+    environment: &live-env
+      LIVE_ENABLED: 'true'
+      GO_BALANCE_DISABLED: ${GO_BALANCE_DISABLED:-false}
+      RUNTIME_VERIFIED: ${RUNTIME_VERIFIED:-false}
+      GATEWAY_URL: http://gateway:8010
+  worker:
+    environment: *live-env
+    depends_on:
+      gateway: {condition: service_healthy}
+  gateway:
+    restart: unless-stopped
+    user: '${LOCAL_UID:-1000}:${LOCAL_GID:-1000}'
+    build: {context: ., dockerfile: backend/Dockerfile}
+    command: [uvicorn, operations.gateway:app, --host, 0.0.0.0, --port, '8010']
+    environment:
+      DATABASE_URL: postgresql://operations:${POSTGRES_PASSWORD:-local-development-only}@db:5432/operations
+      LIVE_ENABLED: 'true'
+      GO_BALANCE_DISABLED: ${GO_BALANCE_DISABLED:-false}
+      RUNTIME_VERIFIED: ${RUNTIME_VERIFIED:-false}
+      GO_KEY_FILE: /run/credentials/go.json
+      FIRECRAWL_KEY_FILE: /run/credentials/firecrawl.json
+      BUDGET_SCOPE: acceptance
+      MAX_MODEL_CALLS: '100'
+      MAX_FIRECRAWL_CREDITS: '250'
+    volumes:
+      - ./runtime/credentials:/run/credentials:ro
+    networks: [private, provider]
+    depends_on: {db: {condition: service_healthy}}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request,json; assert json.load(urllib.request.urlopen('http://127.0.0.1:8010/health'))['ready']"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+networks:
+  provider: {driver: bridge}

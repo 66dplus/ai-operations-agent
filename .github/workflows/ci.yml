@@ -1,0 +1,40 @@
+name: Offline acceptance
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16.13-bookworm
+        env: {POSTGRES_PASSWORD: operations, POSTGRES_USER: operations, POSTGRES_DB: operations}
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd 'pg_isready -U operations -d operations'
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://operations:operations@127.0.0.1:5432/operations
+      TEST_DATABASE_URL: postgresql://operations:operations@127.0.0.1:5432/operations
+      LIVE_ENABLED: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24.14.1', cache: npm, cache-dependency-path: frontend/package-lock.json}
+      - uses: astral-sh/setup-uv@v6
+        with: {version: '0.10.10', python-version: '3.12.13'}
+      - run: uv sync --frozen
+        working-directory: backend
+      - run: uv run pytest -q
+        working-directory: backend
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run typecheck && npm run build
+        working-directory: frontend
+      - run: npx playwright install --with-deps --no-shell chromium
+        working-directory: frontend
+      - run: |
+          python scripts/dev.py > /tmp/operations-dev.log 2>&1 &
+          for i in $(seq 1 60); do curl -fsS http://localhost:3000/api/health && break; sleep 1; done
+          npm --prefix frontend run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: browser-evidence, path: 'frontend/playwright-report/'}

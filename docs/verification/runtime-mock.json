@@ -1,0 +1,23 @@
+{
+  "runtime": "opencode-ai@1.18.35",
+  "provider": "opencode-go",
+  "model": "deepseek-v4.1-flash",
+  "transport": "native OpenCode server -> local mock OpenAI streaming endpoint",
+  "global_mcp_count": 0,
+  "allowed_tools_observed": [
+    "skill",
+    "StructuredOutput"
+  ],
+  "default_permission": "deny",
+  "structured_field": "info.structured",
+  "result": {
+    "company": "Probe Robotics",
+    "evidence": "Public research fixture",
+    "score": 82
+  },
+  "mock_pass": true,
+  "live_pass": false,
+  "actual_provider_requests": 0,
+  "firecrawl_credits": 0,
+  "limitation": "Historical mock-only transport/config proof. Actual Go runtime and completed live50 evidence are recorded separately in runtime-live.json."
+}

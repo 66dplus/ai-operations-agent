@@ -1,0 +1,58 @@
+name: ai-operations-agent
+services:
+  db:
+    restart: unless-stopped
+    image: postgres:16.13-bookworm
+    environment:
+      POSTGRES_DB: operations
+      POSTGRES_USER: operations
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local-development-only}
+    volumes: [database:/var/lib/postgresql/data]
+    networks: [private]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U operations -d operations']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  api:
+    restart: unless-stopped
+    build: {context: ., dockerfile: backend/Dockerfile}
+    environment: &backend-env
+      DATABASE_URL: postgresql://operations:${POSTGRES_PASSWORD:-local-development-only}@db:5432/operations
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:3100}
+      LIVE_ENABLED: 'false'
+      MAX_MODEL_CALLS: '100'
+      MAX_FIRECRAWL_CREDITS: '250'
+      BUDGET_SCOPE: acceptance
+    depends_on: {db: {condition: service_healthy}}
+    networks: [private]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  worker:
+    restart: unless-stopped
+    build: {context: ., dockerfile: backend/Dockerfile}
+    command: [python, -m, operations.worker]
+    environment: *backend-env
+    depends_on: {api: {condition: service_healthy}}
+    networks: [private]
+  web:
+    restart: unless-stopped
+    build: {context: ., dockerfile: frontend/Dockerfile}
+    ports: ['127.0.0.1:${APP_PORT:-3100}:3000']
+    depends_on: {api: {condition: service_healthy}}
+    networks: [private, edge]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  database:
+networks:
+  private:
+    internal: true
+  edge:
+    driver: bridge
