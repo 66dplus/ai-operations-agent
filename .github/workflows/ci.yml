@@ -33,6 +33,10 @@ jobs:
         working-directory: frontend
       - run: |
           python scripts/dev.py > /tmp/operations-dev.log 2>&1 &
+          dev_pid=$!
+          # uv run holds the cache lock until its child exits. Stop only this
+          # runner's owned processes before setup-uv prunes the cache.
+          trap 'kill -TERM "$dev_pid" 2>/dev/null || true; wait "$dev_pid" || true' EXIT
           for i in $(seq 1 60); do curl -fsS http://localhost:3000/api/health && break; sleep 1; done
           npm --prefix frontend run test:e2e
       - uses: actions/upload-artifact@v4

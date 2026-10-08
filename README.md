@@ -1,5 +1,7 @@
 # AI Operations Agent
 
+[![Offline acceptance](https://github.com/66dplus/ai-operations-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/66dplus/ai-operations-agent/actions/workflows/ci.yml)
+
 Turn one research request into a list of companies, verified website evidence, fit scores and introduction drafts. Review and edit the drafts, approve a saved revision, then export approved results as CSV or JSON.
 
 A local, single-user MVP built with Next.js, FastAPI, PostgreSQL, Firecrawl and an isolated OpenCode research agent. English UI; research requests can be written in English or Russian. Nothing sends messages automatically.
@@ -67,7 +69,8 @@ Verification on 2026-10-08, runtime source at commit `659669c`:
 | Original live50 | 50 unique researched companies, 48 qualified, 64 source snapshots | PASS, native live |
 | New Linux live5 | Five researched companies, nine source snapshots, 19 verified quotations | PASS, live |
 | Typecheck, production build and restart | Linux containers rebuilt/recreated; usage and approved exports preserved | PASS |
-| Remote GitHub Actions / public server deployment | Not executed | NOT RUN |
+| Remote GitHub Actions | Offline PostgreSQL, build and browser workflow; publication checks and initial CI fixes are recorded in the publication guide | [Current CI result](https://github.com/66dplus/ai-operations-agent/actions/workflows/ci.yml) |
+| Public server deployment | Not executed | NOT RUN |
 
 The measured live5 used **13 model requests / 189,439 reported tokens** and **25 Firecrawl credits**, confirmed by an account balance change from 724 to 699. This is one measured run, not a promised cost per five companies. Token counts do not establish a dollar invoice or how much a different provider would cost. See [current measurement](docs/verification/uncapped-acceptance.md) and [historical capped acceptance](docs/verification/acceptance.md).
 

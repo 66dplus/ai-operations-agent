@@ -41,6 +41,9 @@
     "csv_readback": "PASS",
     "restored_approval": "PASS",
     "local_links": "PASS",
-    "github_publication": "NOT RUN"
+    "github_publication": "PASS",
+    "github_asset_git_hashes": "PASS",
+    "github_large_file_readback": "FAIL",
+    "github_authenticated_browser_view": "NOT RUN"
   }
 }

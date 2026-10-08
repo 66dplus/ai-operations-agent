@@ -54,7 +54,7 @@ Playwright reports/traces are ignored. Tests also write delivery screenshots und
 
 ## CI and live verification
 
-[Offline acceptance](.github/workflows/ci.yml) installs locked dependencies, runs PostgreSQL tests, builds/typechecks the UI and runs browser tests against a native offline application with PostgreSQL 16.13. It requires no provider secrets and does not claim live validation. Remote GitHub Actions has not yet been executed for this repository; local results are recorded separately.
+[Offline acceptance](.github/workflows/ci.yml) installs locked dependencies, runs PostgreSQL tests, builds/typechecks the UI and runs browser tests against a native offline application with PostgreSQL 16.13. It requires no provider secrets and does not claim live validation. The browser step stops its owned development process groups on both success and failure before setup-uv prunes the cache. The [Actions page](https://github.com/66dplus/ai-operations-agent/actions/workflows/ci.yml) reports the current remote result; [publication evidence](docs/github.md) and local acceptance records distinguish their environments.
 
 For live integration changes, verify the real pinned runtime, selected model, structured output and tool restrictions before dispatch. Confirm Go **Use balance OFF**, credentials and the owner's remaining authorized budget. Retain ledger history, uncertain reservations and existing approvals. An offline mock cannot establish a new provider/model contract.
 

@@ -11,7 +11,7 @@ Recorded on 2026-10-08 through Computer Use in the actual local application. Pro
 | [demo-poster.jpg](demo-poster.jpg) | Preview image showing the company review panel |
 | [demo-preview.html](demo-preview.html) | Local video player with chapter navigation and MP4 download |
 
-The README embeds the GIF and links to the MP4. These are static files suitable for repository publication; they do not require a hosted research API. The selected GitHub repository and remote rendering/publication remain pending. GitHub's native attachment player can also be used by uploading the MP4 when editing the eventual README.
+The README embeds the GIF and links to the MP4. These static files are published in the private [66dplus/ai-operations-agent repository](https://github.com/66dplus/ai-operations-agent); they do not require a hosted research API. GitHub's server-rendered README contains the GIF and MP4 link. Remote Git blob hashes and sizes match the local assets; full MP4 API downloads and a fresh clone encountered local network truncation/timeouts. A native attachment player is not configured; browser sessions were signed out, so authenticated browser verification remains NOT RUN.
 
 The previous [live still-image GIF](demo-live-stills.gif) is preserved for the historical acceptance report. Current media checks are recorded in [demo-verification.json](demo-verification.json).
 
@@ -39,7 +39,9 @@ The source material is 332 actual browser screenshots, including real intermedia
 | Video structure and decoding | 64.5 seconds, 1920×1080, 30fps H.264; full FFmpeg decode succeeds | PASS |
 | Browser playback | In-app browser decodes the MP4, plays and seeks chapters with no media error | PASS |
 | Visual review | Title/end cards, typing, results, evidence, editing, approval and export frames inspected | PASS |
-| GitHub rendering/publication | Repository destination not yet selected | NOT RUN |
+| GitHub rendering/publication | Private repository; API-rendered README includes GIF and MP4 links, remote Git blob hashes and sizes match | PASS |
+| Large-file readback through this network | MP4 API responses truncated; fresh clone timed out | FAIL |
+| Authenticated GitHub browser view | Available browser sessions were signed out | NOT RUN |
 
 Backend behavior tests and live-provider gates were not repeated for this media-only change; prior results remain in the dated acceptance reports. The recording is a new offline user-flow check, not another live acceptance run.
 
