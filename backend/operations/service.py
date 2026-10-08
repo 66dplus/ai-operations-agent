@@ -42,7 +42,7 @@ def create_campaign(body, idempotency_key):
             if existing['query'] != body.query.strip() or existing['mode'] != body.mode:
                 raise HTTPException(409, 'This request key was already used with a different query.')
             return existing
-        if body.mode == 'live':
+        if body.mode == 'live' and settings.budget_limits_enabled:
             budget = c.execute('SELECT * FROM budget WHERE name=%s', (settings.budget_scope,)).fetchone()
             if budget['model_calls'] >= settings.max_calls or budget['firecrawl_credits'] >= settings.max_credits:
                 raise HTTPException(409, 'The shared live verification budget is exhausted. Demo research and saved results remain available.')
@@ -63,6 +63,23 @@ def qualified(qualification):
     return bool(qualification and qualification['score'] >= 70 and qualification['verdict'] in ('strong_fit', 'possible_fit'))
 
 
+def campaign_usage(c, campaign_id):
+    requests = c.execute('SELECT r.id,r.provider,r.units,r.status,r.usage,r.created_at,j.kind AS step FROM provider_requests r JOIN jobs j ON j.id=r.job_id WHERE j.campaign_id=%s ORDER BY r.created_at', (campaign_id,)).fetchall()
+    for request in requests:
+        request['usage'] = request['usage'] or {}
+    models = [r for r in requests if r['provider'] == 'model']
+    pages = [r for r in requests if r['provider'] == 'firecrawl']
+    credits = [r['usage']['credits_used'] for r in pages if 'credits_used' in r['usage']]
+    tokens = [r['usage']['tokens'] for r in models if 'tokens' in r['usage']]
+    return {'model_requests': len(models), 'firecrawl_requests': len(pages),
+            'uncertain_requests': sum(r['status'] == 'reserved' for r in requests),
+            'firecrawl_reserved_credits': sum(r['units'] for r in pages),
+            'firecrawl_reported_credits': sum(credits) if credits else None,
+            'firecrawl_reported_requests': len(credits), 'tokens_reported_requests': len(tokens),
+            'tokens': {k: sum(t.get(k, 0) for t in tokens) for k in ('prompt_tokens', 'completion_tokens', 'total_tokens')},
+            'requests': requests}
+
+
 def snapshot(campaign_id):
     with db.connect() as c:
         campaign = c.execute('SELECT * FROM campaigns WHERE id=%s', (campaign_id,)).fetchone()
@@ -74,7 +91,9 @@ def snapshot(campaign_id):
             lead['sources'] = c.execute('SELECT id,url,title,content,content_hash,fetched_at FROM sources WHERE lead_id=%s ORDER BY fetched_at', (lead['id'],)).fetchall()
         logs = c.execute('SELECT * FROM run_logs WHERE campaign_id=%s ORDER BY id DESC LIMIT 300', (campaign_id,)).fetchall()
         budget = c.execute('SELECT * FROM budget WHERE name=%s', (settings.budget_scope,)).fetchone()
-    return {'campaign': campaign, 'leads': leads, 'logs': logs, 'budget': budget,
+        budget.update(limits_enabled=settings.budget_limits_enabled, max_model_calls=settings.max_calls, max_firecrawl_credits=settings.max_credits)
+        usage = campaign_usage(c, campaign_id)
+    return {'campaign': campaign, 'leads': leads, 'logs': logs, 'budget': budget, 'usage': usage,
             'counts': {'discovered': len(leads), 'processed': sum(x['qualification'] is not None for x in leads),
                        'qualified': sum(x['qualified'] for x in leads),
                        'approved': sum(x['review_status'] == 'approved' for x in leads),
@@ -208,11 +227,19 @@ def retry_campaign(campaign_id):
         ca = c.execute('SELECT * FROM campaigns WHERE id=%s FOR UPDATE', (campaign_id,)).fetchone()
         if not ca:
             raise HTTPException(404, 'Campaign not found.')
-        if ca['status'] == 'budget_exhausted':
+        if ca['status'] == 'budget_exhausted' and settings.budget_limits_enabled:
             raise HTTPException(409, 'The shared budget is exhausted; retry cannot increase it.')
         jobs = c.execute("UPDATE jobs SET status='queued',attempts=0,available_at=now(),error=NULL,lease_version=lease_version+1,capability_hash=NULL WHERE campaign_id=%s AND status IN ('failed','cancelled') RETURNING id", (campaign_id,)).fetchall()
         if not jobs:
-            raise HTTPException(409, 'There are no failed or cancelled steps to retry.')
+            # A capped pilot can stop before creating remaining jobs. Release
+            # only after explicit retry; completed results/reviews are untouched.
+            if ca['status'] != 'budget_exhausted' or ca['live_phase'] != 'pilot':
+                raise HTTPException(409, 'There are no failed or cancelled steps to retry.')
+            from .queue import settle
+            c.execute("UPDATE campaigns SET status='queued',error=NULL WHERE id=%s", (campaign_id,))
+            settle(c, campaign_id)
+            if not c.execute("SELECT 1 FROM jobs WHERE campaign_id=%s AND status='queued'", (campaign_id,)).fetchone():
+                raise HTTPException(409, 'There are no unfinished pilot steps to release.')
         c.execute("UPDATE leads SET status=CASE WHEN EXISTS(SELECT 1 FROM sources s WHERE s.lead_id=leads.id) THEN 'scraped' ELSE 'discovered' END,error=NULL WHERE campaign_id=%s AND qualification IS NULL", (campaign_id,))
         c.execute("UPDATE campaigns SET status='queued',error=NULL WHERE id=%s", (campaign_id,))
         db.log(c, campaign_id, 'campaign', 'retrying', 'Only unfinished work was requeued.')

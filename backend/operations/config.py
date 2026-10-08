@@ -2,6 +2,12 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+
+def budget_limits_enabled(value: str | None) -> bool:
+    # Only an explicit opt-out disables enforcement; typos keep the cap.
+    return (value or '').strip().lower() != 'false'
+
+
 @dataclass(frozen=True)
 class Settings:
     database_url: str = os.getenv('DATABASE_URL', 'dbname=ai_operations_local')
@@ -14,6 +20,7 @@ class Settings:
     budget_scope: str = os.getenv('BUDGET_SCOPE', 'acceptance')
     max_calls: int = int(os.getenv('MAX_MODEL_CALLS', '100'))
     max_credits: int = int(os.getenv('MAX_FIRECRAWL_CREDITS', '250'))
+    budget_limits_enabled: bool = budget_limits_enabled(os.getenv('BUDGET_LIMITS_ENABLED'))
     lease_seconds: int = int(os.getenv('LEASE_SECONDS', '60'))
     go_balance_disabled: bool = os.getenv('GO_BALANCE_DISABLED', '').lower() == 'true'
     live_enabled: bool = os.getenv('LIVE_ENABLED', '').lower() == 'true'

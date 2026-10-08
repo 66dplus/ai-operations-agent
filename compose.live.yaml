@@ -25,6 +25,7 @@ services:
       BUDGET_SCOPE: acceptance
       MAX_MODEL_CALLS: '100'
       MAX_FIRECRAWL_CREDITS: '250'
+      BUDGET_LIMITS_ENABLED: ${BUDGET_LIMITS_ENABLED:-true}
     volumes:
       - ./runtime/credentials:/run/credentials:ro
     networks: [private, provider]

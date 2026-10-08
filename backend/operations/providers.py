@@ -117,6 +117,13 @@ def firecrawl(token, endpoint, body, units):
             raise ProviderError('Firecrawl returned invalid JSON.') from error
         if not isinstance(data, dict) or not data.get('success') or not isinstance(data.get('data'), (dict,list)):
             raise ProviderError('Firecrawl could not retrieve this public page.')
+        usage = {'http_status': response.status_code, 'reserved_credits': units, 'endpoint': endpoint}
+        # Search documents creditsUsed; scrape may omit it. Never substitute
+        # our reservation estimate for a provider-reported charge.
+        credits = data.get('creditsUsed')
+        if type(credits) is int and credits >= 0:
+            usage['credits_used'] = credits
+        receipt(reservation, 'received', usage)
         with db.connect() as c:
             db.require_lease(c, job['id'], job['lease_version'], lock=True)
             db.log(c, job['campaign_id'], endpoint, 'received', f'Firecrawl {endpoint}: {units} credits reserved.',

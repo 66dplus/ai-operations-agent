@@ -1,0 +1,602 @@
+{
+  "campaign_id": "c0f7106e-dc6b-431a-b577-15bbb83a6131",
+  "query": "Find 5 robotics companies in Germany developing robots or automation hardware. I offer simulation testing tools for robotics teams.",
+  "status": "PASS",
+  "counts": {
+    "discovered": 5,
+    "processed": 5,
+    "qualified": 5,
+    "approved": 0,
+    "failed": 0
+  },
+  "source_snapshots": 9,
+  "checked_quotes": 19,
+  "all_source_hashes_checked": true,
+  "budget_before": {
+    "name": "acceptance",
+    "model_calls": 87,
+    "firecrawl_credits": 250
+  },
+  "budget_after": {
+    "name": "acceptance",
+    "model_calls": 100,
+    "firecrawl_credits": 275,
+    "limits_enabled": false,
+    "max_model_calls": 100,
+    "max_firecrawl_credits": 250
+  },
+  "usage": {
+    "model_requests": 13,
+    "firecrawl_requests": 13,
+    "uncertain_requests": 0,
+    "firecrawl_reserved_credits": 25,
+    "firecrawl_reported_credits": 16,
+    "firecrawl_reported_requests": 4,
+    "tokens_reported_requests": 13,
+    "tokens": {
+      "prompt_tokens": 171632,
+      "completion_tokens": 17807,
+      "total_tokens": 189439
+    },
+    "requests": [
+      {
+        "id": "5acb443c-b6b4-489b-9ef5-968776877313",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 1469,
+            "prompt_tokens": 1379,
+            "completion_tokens": 90
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:46:42.447413+00:00",
+        "step": "plan"
+      },
+      {
+        "id": "113a1812-4dc0-4aa0-ba4a-e2b369a011d8",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 1562,
+            "prompt_tokens": 1487,
+            "completion_tokens": 75
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:46:44.705187+00:00",
+        "step": "plan"
+      },
+      {
+        "id": "1c97f153-4b15-4f55-9f27-c69b0a5544b0",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 1691,
+            "prompt_tokens": 1630,
+            "completion_tokens": 61
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:46:46.856629+00:00",
+        "step": "plan"
+      },
+      {
+        "id": "a00792fd-1d6f-4619-8fa3-4820ec318939",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 2621,
+            "prompt_tokens": 1709,
+            "completion_tokens": 912
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:46:49.415580+00:00",
+        "step": "plan"
+      },
+      {
+        "id": "ccd2ddfe-9b6b-4889-8633-3ec373aca445",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 1751,
+            "prompt_tokens": 1677,
+            "completion_tokens": 74
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:47:04.026395+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "6c2a0c36-bc60-44f9-9637-df5ab2bfb27f",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 2336,
+            "prompt_tokens": 2207,
+            "completion_tokens": 129
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:47:05.966841+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "3557db7b-fdf8-40f0-bde2-0521ba74f021",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 2609,
+            "prompt_tokens": 2354,
+            "completion_tokens": 255
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:47:08.833918+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "0594be32-0e28-4ca1-a8d3-1949704289b3",
+        "provider": "firecrawl",
+        "units": 4,
+        "status": "received",
+        "usage": {
+          "endpoint": "search",
+          "http_status": 200,
+          "credits_used": 4,
+          "reserved_credits": 4
+        },
+        "created_at": "2026-10-08T06:47:12.418120+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "489efa33-547c-4d73-8399-18f53bf343ce",
+        "provider": "firecrawl",
+        "units": 4,
+        "status": "received",
+        "usage": {
+          "endpoint": "search",
+          "http_status": 200,
+          "credits_used": 4,
+          "reserved_credits": 4
+        },
+        "created_at": "2026-10-08T06:47:12.457465+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "37d4ba0d-5b78-4595-9ec1-212bf495a05d",
+        "provider": "firecrawl",
+        "units": 4,
+        "status": "received",
+        "usage": {
+          "endpoint": "search",
+          "http_status": 200,
+          "credits_used": 4,
+          "reserved_credits": 4
+        },
+        "created_at": "2026-10-08T06:47:14.851673+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "64cd1fd5-139f-438c-bc90-ef0f72a5d2e1",
+        "provider": "firecrawl",
+        "units": 4,
+        "status": "received",
+        "usage": {
+          "endpoint": "search",
+          "http_status": 200,
+          "credits_used": 4,
+          "reserved_credits": 4
+        },
+        "created_at": "2026-10-08T06:47:16.801229+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "a95540ea-7ee8-4362-bd2f-7650a8d49802",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 13777,
+            "prompt_tokens": 12324,
+            "completion_tokens": 1453
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:47:24.397774+00:00",
+        "step": "discovery"
+      },
+      {
+        "id": "3fa9c6af-2207-4b41-9f03-dc2b42539c92",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:47:35.619548+00:00",
+        "step": "research"
+      },
+      {
+        "id": "49d86198-e91b-4e39-8a2f-db7a5e4d1022",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:47:38.670894+00:00",
+        "step": "research"
+      },
+      {
+        "id": "41267f26-f5bb-4414-8cb7-85f528d5def4",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:47:42.587223+00:00",
+        "step": "research"
+      },
+      {
+        "id": "2f407954-1a60-440e-bf00-947269861e04",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:47:45.363256+00:00",
+        "step": "research"
+      },
+      {
+        "id": "f8df773f-1cf8-4de8-be0c-b319f7aa9034",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:47:51.604862+00:00",
+        "step": "research"
+      },
+      {
+        "id": "78df02f3-d68a-4f11-bf2a-1b6de0fecd47",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 13282,
+            "prompt_tokens": 13213,
+            "completion_tokens": 69
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:47:58.229938+00:00",
+        "step": "research"
+      },
+      {
+        "id": "aff7da5d-f405-46d3-8cc3-9cc431fdfd0d",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 26260,
+            "prompt_tokens": 24288,
+            "completion_tokens": 1972
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:48:00.723049+00:00",
+        "step": "research"
+      },
+      {
+        "id": "cb0d28b1-31fa-4226-8f67-2b9addd8bd8b",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 26722,
+            "prompt_tokens": 26318,
+            "completion_tokens": 404
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:48:17.687993+00:00",
+        "step": "research"
+      },
+      {
+        "id": "34b7c30b-9e7b-4a5b-ae40-84b571c26f35",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:48:21.958804+00:00",
+        "step": "research"
+      },
+      {
+        "id": "bc615ac0-5a57-4192-aab7-60b1a997fbe0",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:48:21.972447+00:00",
+        "step": "research"
+      },
+      {
+        "id": "586928ca-1769-4753-945f-642fa065ef78",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:48:23.946651+00:00",
+        "step": "research"
+      },
+      {
+        "id": "8a3bf03d-ebcc-41ae-a26d-0302d7bab1d9",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 41497,
+            "prompt_tokens": 40066,
+            "completion_tokens": 1431
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:48:35.233112+00:00",
+        "step": "research"
+      },
+      {
+        "id": "2ba4b3a4-7038-42cd-88c0-dd1018d5d2e1",
+        "provider": "firecrawl",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "endpoint": "scrape",
+          "http_status": 200,
+          "reserved_credits": 1
+        },
+        "created_at": "2026-10-08T06:48:47.106236+00:00",
+        "step": "research"
+      },
+      {
+        "id": "2ba84f29-8353-443a-84a0-453f7a702a19",
+        "provider": "model",
+        "units": 1,
+        "status": "received",
+        "usage": {
+          "tokens": {
+            "total_tokens": 53862,
+            "prompt_tokens": 42980,
+            "completion_tokens": 10882
+          },
+          "http_status": 200,
+          "stream_complete": true
+        },
+        "created_at": "2026-10-08T06:48:49.783108+00:00",
+        "step": "research"
+      }
+    ]
+  },
+  "companies": [
+    {
+      "name": "Agile Robots SE",
+      "domain": "agile-robots.com",
+      "score": 90
+    },
+    {
+      "name": "NEURA Robotics",
+      "domain": "neura-robotics.com",
+      "score": 88
+    },
+    {
+      "name": "Innok Robotics",
+      "domain": "innok-robotics.de",
+      "score": 85
+    },
+    {
+      "name": "MetraLabs GmbH",
+      "domain": "metralabs.com",
+      "score": 84
+    },
+    {
+      "name": "KUKA",
+      "domain": "kuka.com",
+      "score": 72
+    }
+  ],
+  "approved_export_hashes_unchanged": {
+    "csv": "d88fabac5a478de6c9b44be2595d71a3c921ae7d5b1c67c2b7a75719a5a416dd",
+    "json": "6a5adc56d7d85a03bb1197477c3d3d4b939496f80db3fc3800dbe8db411083a5"
+  },
+  "verified_date": "2026-10-08",
+  "source_base": "831127b",
+  "backend": {
+    "status": "PASS",
+    "tests": 62,
+    "duration_seconds": 29.17,
+    "database": "real PostgreSQL16.13, isolated schemas"
+  },
+  "browser": {
+    "status": "PASS",
+    "tests": 12,
+    "duration_seconds": 51.3,
+    "projects": [
+      "desktop",
+      "mobile"
+    ],
+    "paid_creation_in_automated_tests": false
+  },
+  "build": {
+    "status": "PASS",
+    "native_typecheck": true,
+    "production_linux_build": true
+  },
+  "review": {
+    "status": "PASS",
+    "independent": "gpt-6.1-sol read-only critique and code review; no material blockers; reviewer did not rerun tests"
+  },
+  "firecrawl_account": {
+    "credits_before": 724,
+    "credits_after": 699,
+    "observed_decrease": 25,
+    "per_response_reported_credits": 16,
+    "per_response_coverage": "4 of 13 requests; scrape charge metadata absent"
+  },
+  "go_account": {
+    "before": {
+      "usage": {
+        "rolling": {
+          "status": "ok",
+          "percent": 0,
+          "resetsAt": "2026-10-08T11:45:05.767Z"
+        },
+        "weekly": {
+          "status": "ok",
+          "percent": 1,
+          "resetsAt": "2026-10-12T00:00:00.000Z"
+        },
+        "monthly": {
+          "status": "ok",
+          "percent": 25,
+          "resetsAt": "2026-10-16T09:53:03.000Z"
+        }
+      }
+    },
+    "after": {
+      "usage": {
+        "rolling": {
+          "status": "ok",
+          "percent": 0,
+          "resetsAt": "2026-10-08T11:46:44.000Z"
+        },
+        "weekly": {
+          "status": "ok",
+          "percent": 1,
+          "resetsAt": "2026-10-12T00:00:00.000Z"
+        },
+        "monthly": {
+          "status": "ok",
+          "percent": 25,
+          "resetsAt": "2026-10-16T09:53:03.000Z"
+        }
+      }
+    },
+    "limits": "Integer percentages are rounded, not a per-request billing receipt.",
+    "use_balance": "Owner confirmed OFF; gateway confirmation flag unchanged."
+  },
+  "runtime": {
+    "budget_limits_enabled": false,
+    "services_checked": [
+      "api",
+      "worker",
+      "gateway"
+    ],
+    "live_available": true,
+    "go_balance_disabled": true,
+    "no_new_budget_scope": true,
+    "concurrency": 2,
+    "retry_attempts": 3
+  },
+  "remaining": {
+    "fresh_live50_repeat": "NOT RUN; existing native live50 acceptance preserved, one actual Linux Live5 verifies this change.",
+    "remote_ci": "NOT RUN; no push requested",
+    "server_deployment": "NOT RUN; later phase"
+  },
+  "restart": {
+    "status": "PASS",
+    "all_six_containers_recreated": true,
+    "budget_and_usage_unchanged": true,
+    "counts_unchanged": true,
+    "original_approved_csv_json_byte_identical": true,
+    "health": {
+      "ok": true,
+      "live_available": true,
+      "model": "deepseek-v4.1-flash",
+      "budget_limits_enabled": false
+    },
+    "services": [
+      {
+        "service": "api-1",
+        "budget_limits_enabled": false,
+        "go_balance_disabled": true,
+        "image_id": "sha256:adf026c4ca64115ef4b64c275bc18a74cb88b98f7cd94c7eafe893b8e8dea1e1"
+      },
+      {
+        "service": "worker-1",
+        "budget_limits_enabled": false,
+        "go_balance_disabled": true,
+        "image_id": "sha256:9d82e108aa904bf36871466fcb4a36a472efea29506bf27aa5a2a66fdbb5c920"
+      },
+      {
+        "service": "worker-2",
+        "budget_limits_enabled": false,
+        "go_balance_disabled": true,
+        "image_id": "sha256:9d82e108aa904bf36871466fcb4a36a472efea29506bf27aa5a2a66fdbb5c920"
+      },
+      {
+        "service": "gateway-1",
+        "budget_limits_enabled": false,
+        "go_balance_disabled": true,
+        "image_id": "sha256:9d3c4f573fc99c33f08e069a25cfcdc34e971004b89d2652325e5ef459683633"
+      }
+    ]
+  }
+}

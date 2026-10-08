@@ -2,7 +2,7 @@
 
 A local, single-user company research workspace. Enter a request, inspect companies and stored source evidence, edit introductions, approve/reject a specific draft revision, and download approved CSV/JSON. Nothing sends messages automatically.
 
-**Current acceptance:** real research completed 50 unique companies, 48 qualified, with 64 checked source snapshots. Native and Linux OpenCode Go runtime gates passed. See [verification](docs/verification/acceptance.md) for test, review and restart evidence, and [demo GIF](docs/verification/demo.gif) for the interface. The existing verification ledger has reached its Firecrawl cap; saved research, human review, exports and offline Demo remain usable. New live runs are rejected before dispatch.
+**Current acceptance:** real research completed 50 unique companies, 48 qualified, with 64 checked source snapshots. Native and Linux OpenCode Go runtime gates passed. See [verification](docs/verification/acceptance.md) for test, review and restart evidence, and [demo GIF](docs/verification/demo.gif) for the interface. The owner temporarily disabled internal budget caps on 2026-10-08 to measure real usage. The current local app permits Live web research and displays each run's model calls, reported tokens, Firecrawl reservations and reported charges. Existing counters and reviewed drafts are retained.
 
 ## Run the offline demo
 
@@ -62,11 +62,13 @@ There is no Redis, email-sending service, team management or SaaS billing layer.
 
 ## Budget and live gate
 
-All live acceptance—including probes, retries, repairs and auxiliary model calls—must share **250 Firecrawl credits and 100 actual DeepSeek HTTP requests**. Atomic PostgreSQL reservations happen before external dispatch. Ambiguous outcomes retain the reservation. A worker crash cannot prove that a provider did not receive a request. Exhaustion blocks further sends for that provider; new live campaigns are rejected when either cap is reached. Manual retry does not replenish the budget.
+The original live acceptance used a shared cap of **250 Firecrawl credits and 100 actual DeepSeek HTTP requests**, including probes, retries, repairs and auxiliary calls. Enforcement remains the installation default. The owner's 2026-10-08 instruction temporarily disables this application cap with `BUDGET_LIMITS_ENABLED=false`; it does not change provider quotas or OpenCode Go paid fallback. Atomic PostgreSQL reservations happen before external dispatch. Ambiguous outcomes retain the reservation. A worker crash cannot prove that a provider did not receive a request. With limits enabled, exhaustion blocks further sends and new live campaigns. With limits off, the same atomic ledger continues counting all dispatches beyond the old caps. Manual retry never replenishes counters and is required to resume a previously budget-stopped campaign; successful checkpoints and approved revisions are preserved. Set `BUDGET_LIMITS_ENABLED=true` and recreate API, worker and gateway to restore enforcement against the retained totals. Missing or malformed values keep enforcement on.
+
+The visible usage panel measures actual HTTP reservations, including retries and repairs. Token totals come from model SSE usage; Firecrawl `creditsUsed` is recorded when present ([search response contract](https://docs.firecrawl.dev/api-reference/endpoint/search)). Missing reports are explicitly unknown, never filled with estimates. Pending/incomplete requests retain reservations. Per-run figures join only that campaign's jobs; shared counters include all historical runs. Token counts are not a dollar invoice for a Go subscription. Provider account balance readback is separate from reserved credits.
 
 Do not enable Go paid fallback, top up or switch to a paid provider. The owner confirmed Use balance OFF; Go usage was checked read-only as well. `.env.example` leaves `LIVE_ENABLED=false`, `GO_BALANCE_DISABLED=false` and `RUNTIME_VERIFIED=false` for safe offline startup. Flags alone do not prove a different host's live runtime is ready; the gateway must also have configured credentials and the real runtime gate must pass.
 
-Live acceptance starts with five companies that remain in the final 50. Remaining jobs do not exist until those five succeed and the measured cost projection fits the remaining shared budget. Every claimed result contains a checked quote from a stored public source. An incomplete live run stays NOT RUN/FAIL in acceptance, even if the demo passes. The completed50 native run used56 model reservations and167 Firecrawl credits across all probes/retries to that point. One Linux runtime probe raised the model count to57. A subsequently detected asynchronous mode-selection bug launched unintended live test runs: the retained total is87 model reservations (86 received,1 uncertain) and250 Firecrawl credits. The bug is fixed, all such tasks are fenced, and the cap was never reset. Those runs do not replace the verified original50. Another live budget requires separate owner authorization; no refill, new scope or paid fallback was used.
+Live acceptance starts with five companies that remain in the final 50. Remaining jobs do not exist until those five succeed; the measured cost projection gates release only while limits are enabled. Every claimed result contains a checked quote from a stored public source. An incomplete live run stays NOT RUN/FAIL in acceptance, even if the demo passes. The completed50 native run used56 model reservations and167 Firecrawl credits across all probes/retries to that point. One Linux runtime probe raised the model count to57. A subsequently detected asynchronous mode-selection bug launched unintended live test runs: the retained total is87 model reservations (86 received,1 uncertain) and250 Firecrawl credits. The bug is fixed, all such tasks are fenced, and the cap was never reset. Those runs do not replace the verified original50. The owner then explicitly authorized uncapped measurement on 2026-10-08. No refill, new scope or paid fallback was used. The historical capped evidence is preserved in the acceptance report.
 
 ## Enable live research
 
@@ -77,6 +79,8 @@ For native live development, install the pinned CLI and use your existing creden
 ```sh
 cd runtime-template/node && npm ci && cd ../..
 export LIVE_ENABLED=true GO_BALANCE_DISABLED=true RUNTIME_VERIFIED=true
+# Owner-authorized temporary measurement mode; omit to retain default caps:
+export BUDGET_LIMITS_ENABLED=false
 export GO_KEY_FILE="$HOME/.local/share/opencode/auth.json"
 export FIRECRAWL_KEY_FILE="$HOME/Library/Application Support/firecrawl-cli/credentials.json"
 python3 scripts/dev.py
@@ -90,6 +94,8 @@ For Linux Compose live mode, import only the existing selected-provider keys int
 python3 scripts/import_local_credentials.py
 export LOCAL_UID=$(id -u) LOCAL_GID=$(id -g)
 export GO_BALANCE_DISABLED=true RUNTIME_VERIFIED=true
+# Owner-authorized temporary measurement mode; omit to retain default caps:
+export BUDGET_LIMITS_ENABLED=false
 docker compose -f compose.yaml -f compose.live.yaml up --build -d --wait
 ```
 

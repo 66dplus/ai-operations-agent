@@ -107,3 +107,27 @@ test('lost create response can be retried without creating duplicate runs',async
   const history=await (await page.request.get('/api/campaigns')).json();
   expect(history.filter((x:{query:string})=>x.query===query)).toHaveLength(1);
 });
+
+// Metadata display uses intercepted readback; paid dispatch is never exercised here.
+test('live usage distinguishes provider reports, reservations and uncertain responses',async({page})=>{
+  await page.goto('/');
+  await page.getByRole('textbox',{name:'Research request'}).fill('Find 1 robotics company for a usage display check.');
+  await page.getByRole('button',{name:'Start research →'}).click();
+  await expect(page.getByText('DEMO · RESEARCH COMPLETE')).toBeVisible({timeout:30000});
+  const id=await page.evaluate(()=>localStorage.getItem('operations.campaign'));
+  const snapshot=await (await page.request.get('/api/campaigns/'+id)).json();
+  snapshot.campaign.mode='live';snapshot.budget.limits_enabled=false;
+  snapshot.usage={model_requests:2,firecrawl_requests:2,uncertain_requests:1,firecrawl_reserved_credits:7,firecrawl_reported_credits:0,firecrawl_reported_requests:1,tokens_reported_requests:1,tokens:{prompt_tokens:100,completion_tokens:20,total_tokens:120},requests:[{id:'fixture',provider:'firecrawl',step:'discovery',units:6,status:'received',created_at:new Date().toISOString(),usage:{credits_used:0,http_status:200}}]};
+  await page.route('**/api/campaigns/'+id,route=>route.fulfill({json:snapshot}));
+  await page.reload();
+  const usage=page.getByRole('region',{name:'Research usage'});
+  await expect(usage.getByText('Budget limits off',{exact:true})).toBeVisible();
+  await expect(usage.getByText('2 model requests',{exact:true})).toBeVisible();
+  await expect(usage.getByText('2 Firecrawl requests · 7 credits reserved',{exact:true})).toBeVisible();
+  await usage.locator('summary').click();
+  await expect(usage.getByText(/120 tokens reported.*covering 1 of 2 model requests/)).toBeVisible();
+  await expect(usage.getByText(/0 Firecrawl credits reported, covering 1 of 2 requests/)).toBeVisible();
+  await expect(usage.getByText(/1 requests awaiting a complete response/)).toBeVisible();
+  await expect(usage.getByText('6 reserved · 0 credits reported',{exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+});

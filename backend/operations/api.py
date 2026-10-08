@@ -26,7 +26,7 @@ async def check_origin(request: Request, call_next):
 
 @app.get('/api/health')
 def health():
-    return {'ok':True,'live_available':live_ready(),'model':settings.model}
+    return {'ok':True,'live_available':live_ready(),'model':settings.model,'budget_limits_enabled':settings.budget_limits_enabled}
 
 @app.post('/api/campaigns',status_code=201)
 def create(body:CampaignCreate,idempotency_key:str=Header(min_length=8,max_length=120)):

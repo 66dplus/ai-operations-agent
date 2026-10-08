@@ -14,7 +14,7 @@ def database(monkeypatch):
     schema='test_'+uuid4().hex
     with psycopg.connect(base,autocommit=True) as c:
         c.execute(sql.SQL('CREATE SCHEMA {}').format(sql.Identifier(schema)))
-    override=replace(config.settings,database_url=make_conninfo(base,options=f'-c search_path={schema}'),budget_scope='test',live_enabled=False)
+    override=replace(config.settings,database_url=make_conninfo(base,options=f'-c search_path={schema}'),budget_scope='test',live_enabled=False,budget_limits_enabled=True)
     for module in (config,db,queue,service,api):
         monkeypatch.setattr(module,'settings',override)
     monkeypatch.setenv('DEMO_STEP_DELAY','0')

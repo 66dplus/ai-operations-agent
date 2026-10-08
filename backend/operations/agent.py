@@ -112,7 +112,7 @@ def ask(client, session, schema, prompt):
             raise ValueError('OpenCode returned invalid structured output; repair the required schema.')
         with db.connect() as c:
             budget = c.execute('SELECT * FROM budget WHERE name=%s', (settings.budget_scope,)).fetchone()
-        if budget['model_calls'] >= settings.max_calls or budget['firecrawl_credits'] >= settings.max_credits:
+        if settings.budget_limits_enabled and (budget['model_calls'] >= settings.max_calls or budget['firecrawl_credits'] >= settings.max_credits):
             raise db.BudgetExhausted('The shared provider budget is exhausted; no further requests are allowed.')
         error = data['info']['error']
         message = str(error.get('data', {}).get('message') or error.get('name') or 'Unknown runtime failure')[:600]
@@ -192,14 +192,16 @@ def release_after_pilot(c, ca):
     projected_credits = budget['firecrawl_credits'] + 3 * len(remaining)
     measurement = {'pilot_companies': 5, 'used_calls': budget['model_calls'], 'used_credits': budget['firecrawl_credits'],
                    'projected_calls': projected_calls, 'projected_credits': projected_credits}
-    if projected_calls > settings.max_calls or projected_credits > settings.max_credits:
+    measurement['limits_enabled'] = settings.budget_limits_enabled
+    if settings.budget_limits_enabled and (projected_calls > settings.max_calls or projected_credits > settings.max_credits):
         c.execute("UPDATE campaigns SET status='budget_exhausted',error='Pilot cost projects beyond the authorized budget; remaining research was not dispatched.' WHERE id=%s", (ca['id'],))
         db.log(c, ca['id'], 'pilot', 'budget_exhausted', 'Measured pilot does not fit the remaining shared budget.', metadata=measurement)
         return
     c.execute("UPDATE campaigns SET live_phase='all' WHERE id=%s", (ca['id'],))
     for i in range(0,len(remaining),5):
         db.enqueue(c, ca['id'], 'research', str(1+i//5), {'lead_ids':[str(x['id']) for x in remaining[i:i+5]]})
-    db.log(c, ca['id'], 'pilot', 'passed', 'First five companies verified; measured budget permits remaining research.', metadata=measurement)
+    detail = 'Measured budget permits remaining research.' if settings.budget_limits_enabled else 'Budget limits are off; remaining research released with usage tracking.'
+    db.log(c, ca['id'], 'pilot', 'passed', 'First five companies verified. ' + detail, metadata=measurement)
 
 
 def company_landing_url(campaign_id, domain):

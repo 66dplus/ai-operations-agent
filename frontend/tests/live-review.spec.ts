@@ -47,7 +47,7 @@ test('existing live50 evidence, preserved approval, review and exact export',asy
  const exported=JSON.parse(await readFile((await (await jsonPromise).path())!,'utf8'));expect(exported).toHaveLength(2);
  const mir=exported.find((x:{company:string})=>x.company==='Mobile Industrial Robots (MiR)');
  expect(mir.approved_revision).toBe(2);expect(mir.body).toBe(mirBody);
- if(snapshot.budget.firecrawl_credits>=250||snapshot.budget.model_calls>=100){
+ if(snapshot.budget.limits_enabled&&(snapshot.budget.firecrawl_credits>=snapshot.budget.max_firecrawl_credits||snapshot.budget.model_calls>=snapshot.budget.max_model_calls)){
   const before=await (await page.request.get('/api/campaigns')).json();
   await page.getByRole('button',{name:'New research',exact:true}).click();
   await page.getByRole('combobox',{name:'Research mode'}).selectOption('live');

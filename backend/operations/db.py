@@ -77,7 +77,8 @@ def reserve(c, provider, units, job=None, *, scope=None):
     scope = scope or settings.budget_scope
     column, maximum = ('model_calls', settings.max_calls) if provider == 'model' else ('firecrawl_credits', settings.max_credits)
     # Field names are fixed application constants, never agent-controlled SQL.
-    row = c.execute(f'UPDATE budget SET {column}={column}+%s WHERE name=%s AND {column}+%s<=%s RETURNING *', (units, scope, units, maximum)).fetchone()
+    row = c.execute(f'UPDATE budget SET {column}={column}+%s WHERE name=%s AND (NOT %s OR {column}+%s<=%s) RETURNING *',
+                    (units, scope, settings.budget_limits_enabled, units, maximum)).fetchone()
     if not row:
         raise BudgetExhausted(f'{provider} budget exhausted; no request was sent.')
     reservation = uuid4()

@@ -1,4 +1,6 @@
-# Local acceptance — completed
+# Original capped local acceptance — completed
+
+Current uncapped measurement: see [2026-10-08 verification](uncapped-acceptance.md). The report below preserves the original capped acceptance and its historical ledger.
 
 Application0.1.0 on `codex/ai-operations-agent-mvp`, verified2026-10-07 UTC /2026-10-08 Asia/Tbilisi. The local delivery commit contains the verified source, lockfiles, tests and evidence. Native environment: macOS, Python3.12.13, PostgreSQL16.13, Node24.14.1. Linux environment: owned Colima `ai-operations`, Docker29.5.2, pinned Python/Node/PostgreSQL images, production Next.js and two workers. Each row states its verification tier; offline and mock evidence do not establish live-provider behavior.
 

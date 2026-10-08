@@ -8,4 +8,12 @@ export type Lead = {
   sources:{ id:string; url:string; title:string; content:string; content_hash:string; fetched_at:string }[];
 };
 export type Campaign = { id:string; query:string; mode:'demo'|'live'; status:string; target_count:number; error:string|null; created_at:string; criteria:{ title?:string; geography?:string; ideal_customer?:string } };
-export type Snapshot = { campaign:Campaign; leads:Lead[]; logs:{ id:number; step:string; status:string; attempt:number; detail:string; created_at:string; metadata:Record<string,unknown> }[]; budget:{ model_calls:number; firecrawl_credits:number }; counts:{ discovered:number; processed:number; qualified:number; approved:number; failed:number } };
+export type Snapshot = { campaign:Campaign; leads:Lead[]; logs:{ id:number; step:string; status:string; attempt:number; detail:string; created_at:string; metadata:Record<string,unknown> }[]; budget:{ model_calls:number; firecrawl_credits:number; limits_enabled:boolean; max_model_calls:number; max_firecrawl_credits:number }; usage:Usage; counts:{ discovered:number; processed:number; qualified:number; approved:number; failed:number } };
+
+export type Usage = {
+  model_requests:number; firecrawl_requests:number; uncertain_requests:number;
+  firecrawl_reserved_credits:number; firecrawl_reported_credits:number|null;
+  firecrawl_reported_requests:number; tokens_reported_requests:number;
+  tokens:{prompt_tokens:number;completion_tokens:number;total_tokens:number};
+  requests:{id:string;provider:string;step:string;units:number;status:string;created_at:string;usage:{credits_used?:number;tokens?:{total_tokens:number};http_status?:number}}[];
+};
