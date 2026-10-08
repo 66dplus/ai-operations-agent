@@ -1,14 +1,30 @@
-"""Build the delivery preview from verified browser screenshots (Pillow required)."""
+"""Create a small README teaser from the recorded and edited MP4."""
 from pathlib import Path
-from PIL import Image, ImageDraw
-root=Path(__file__).resolve().parents[1]
-frames=[]
-for filename,caption in [('desktop-start.png','1. Describe your research request'),('live-desktop-results.png','2. Review 50 companies from live research'),('live-desktop-review.png','3. Verify evidence and approve your introduction')]:
-    source=Image.open(root/'docs/verification'/filename).convert('RGB')
-    source.thumbnail((960,600))
-    canvas=Image.new('RGB',(960,640),'white')
-    canvas.paste(source,(0,0))
-    ImageDraw.Draw(canvas).text((24,614),caption,fill='#172033')
-    frames.append(canvas)
-frames[0].save(root/'docs/verification/demo.gif',save_all=True,append_images=frames[1:],duration=[1800,2200,2600],loop=0,optimize=True)
-print('Demo GIF created from actual prompt entry and verified live results/review screens.')
+import shutil
+import subprocess
+
+
+def main():
+    root = Path(__file__).resolve().parents[1]
+    video = root / 'docs/verification/demo.mp4'
+    if not video.exists():
+        raise SystemExit('Render docs/verification/demo.mp4 first.')
+    ffmpeg = shutil.which('ffmpeg')
+    if not ffmpeg:
+        raise SystemExit('ffmpeg is required to create the README teaser.')
+    # Short excerpts preserve actual typing, results, source inspection and approval.
+    sections = [(5.5, 8.5), (20.0, 23.0), (29.5, 32.5), (46.0, 49.0)]
+    filters = [f'[0:v]trim=start={start}:end={end},setpts=PTS-STARTPTS[s{i}]'
+               for i, (start, end) in enumerate(sections)]
+    inputs = ''.join(f'[s{i}]' for i in range(len(sections)))
+    filters.append(inputs + f'concat=n={len(sections)}:v=1:a=0,fps=10,scale=960:-1:flags=lanczos,split[a][b]')
+    filters.extend(['[a]palettegen=stats_mode=diff[p]', '[b][p]paletteuse=dither=bayer:bayer_scale=4'])
+    subprocess.run([ffmpeg, '-hide_banner', '-loglevel', 'error', '-y', '-i', str(video),
+                    '-filter_complex', ';'.join(filters), '-loop', '0', str(video.with_suffix('.gif'))], check=True)
+    subprocess.run([ffmpeg, '-hide_banner', '-loglevel', 'error', '-y', '-ss', '26.5', '-i', str(video),
+                    '-frames:v', '1', '-update', '1', '-q:v', '2', str(video.with_name('demo-poster.jpg'))], check=True)
+    print('Created a 12-second README GIF and a poster from the actual demo video.')
+
+
+if __name__ == '__main__':
+    main()

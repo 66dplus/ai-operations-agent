@@ -4,7 +4,9 @@ Turn one research request into a list of companies, verified website evidence, f
 
 A local, single-user MVP built with Next.js, FastAPI, PostgreSQL, Firecrawl and an isolated OpenCode research agent. English UI; research requests can be written in English or Russian. Nothing sends messages automatically.
 
-![Research and human review demo](docs/verification/demo.gif)
+[![Recorded research and human review demo](docs/verification/demo.gif)](docs/verification/demo.mp4)
+
+[Watch or download the 64-second MP4](docs/verification/demo.mp4). This is a recording of the actual local interface using synthetic demo data, with captions and camera zooms. [Recording details](docs/verification/demo-recording.md).
 
 ## Quick start: no API keys
 

@@ -18,6 +18,7 @@ Lockfiles are authoritative. Metadata was read from installed distributions and 
 | Pytest | 9.1.1 | MIT | PostgreSQL behavior tests |
 | pytest-asyncio | 1.4.0 | Apache-2.0 | Async integration tests |
 | Playwright | 1.63.0 | Apache-2.0 | Chromium desktop/mobile entry-to-export tests |
-| Pillow (optional preview tool) | 12.3.0 | MIT-CMU | Encodes the delivery GIF from verified screenshots; bundled tool runtime, absent from app containers |
+| Pillow (optional video tool) | 12.3.0 | MIT-CMU | Composes actual captured UI frames, Inter captions and camera movement; bundled tool runtime, absent from app containers |
+| FFmpeg (optional video tool) | 9.0.1 | GPL-3.0-or-later for the installed GPL/version3 build | Encodes captured UI frames as H.264 MP4, GIF teaser and poster; optional local tooling, absent from app containers |
 
 Runtime images currently pin Python 3.12.13, Node 24.14.1 and PostgreSQL 16.13. uv 0.10.10 installs the Python lockfile. Docker verifies published image manifests during build; clean-container verification is recorded separately.

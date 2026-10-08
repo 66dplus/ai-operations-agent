@@ -8,7 +8,7 @@ The repository is prepared as a source project with documentation, a key-free of
 - Pinned runtime/lockfiles, scoped research skill, Dockerfiles and Compose definitions.
 - `.env.example` with offline, capped defaults.
 - README, setup, architecture, runtime decision, contribution guide and dependency record.
-- Approved Paper reference, demo GIF, screenshots and dated acceptance/usage records.
+- Approved Paper reference, recorded MP4/GIF demo, screenshots and dated acceptance/usage records.
 - Offline GitHub Actions workflow using PostgreSQL and Chromium; no paid-provider secrets required.
 
 The repository has no selected distribution license. Choosing to publish source does not itself choose an open-source license. Decide the project's license before presenting it as open source; dependency licenses are already recorded separately in [dependencies](dependencies.md).

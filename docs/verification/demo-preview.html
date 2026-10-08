@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Operations Agent — recorded demo</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#0e182c;color:#edf2ff;font:16px system-ui,sans-serif}
+  main{max-width:1120px;margin:40px auto;padding:0 24px}h1{font-size:28px;font-weight:600;margin-bottom:8px}
+  p{color:#afbdd6;line-height:1.6}video{display:block;width:100%;background:#0a1224;border-radius:16px;margin:24px 0}
+  button,a{font:inherit;border-radius:9px;padding:10px 16px;color:white;background:#335ae5;border:0;text-decoration:none;cursor:pointer}
+  nav{display:flex;gap:10px;flex-wrap:wrap}nav button{background:#253753}
+</style>
+<main>
+  <h1>AI Operations Agent</h1>
+  <p>A recorded walkthrough of the local app using a synthetic sample dataset.</p>
+  <video id="demo" aria-label="Recorded product demonstration" controls preload="metadata" poster="demo-poster.jpg" src="demo.mp4"></video>
+  <nav aria-label="Video chapters">
+    <button data-time="3.5">Request</button><button data-time="19">Results</button>
+    <button data-time="24.5">Evidence</button><button data-time="36.5">Edit &amp; approve</button>
+    <button data-time="51.5">Export</button><a href="demo.mp4" download>Download MP4</a>
+  </nav>
+  <p>64.5 seconds · 1080p · English captions. Processing footage is accelerated.</p>
+</main>
+<script>
+  const video=document.querySelector('#demo');
+  document.querySelectorAll('[data-time]').forEach(button=>button.addEventListener('click',()=>{
+    video.currentTime=Number(button.dataset.time);video.play();
+  }));
+</script>
+</html>

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-08",
+  "runtime_source": "659669c",
+  "repository_at_recording_start": "b4e562f",
+  "recording_mode": "demo",
+  "browser_captures": 332,
+  "campaign_id": "15681220-2671-46df-9513-a96716044119",
+  "processed_companies": 50,
+  "qualified_companies": 40,
+  "approved_companies": 1,
+  "approved_revision": 2,
+  "provider_requests": 0,
+  "mp4": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "30/1"
+      }
+    ],
+    "format": {
+      "duration": "64.500000",
+      "size": "3381579"
+    }
+  },
+  "gif": {
+    "width": 960,
+    "height": 540,
+    "frames": 120,
+    "duration_seconds": 12.0,
+    "bytes": 1834560
+  },
+  "checks": {
+    "full_video_decode": "PASS",
+    "video_chapter_playback": "PASS",
+    "actual_ui_flow": "PASS",
+    "csv_readback": "PASS",
+    "restored_approval": "PASS",
+    "local_links": "PASS",
+    "github_publication": "NOT RUN"
+  }
+}
